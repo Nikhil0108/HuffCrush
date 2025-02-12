@@ -43,7 +43,8 @@ def compress():
             
             # Run the compression executable
             print("Running compression...")
-            os.system(f'./huffcompress {os.path.join(UPLOADS_DIR, filename)}')
+            os.system(r'huffcompress.exe ' + 
+                      os.path.join(UPLOADS_DIR, filename))
             
             # Extract the base name of the file (without extension)
             filename = filename[:filename.index(".", 1)]
@@ -81,7 +82,8 @@ def decompress():
             
             # Run the decompression executable
             print("Running decompression...")
-            os.system(f'./huffdecompress {os.path.join(UPLOADS_DIR, filename)}')
+            os.system(r'huffdecompress.exe ' + 
+                      os.path.join(UPLOADS_DIR, filename))
             
             # Open the file to read the original file extension
             f = open(os.path.join(UPLOADS_DIR, filename), 'rb')
