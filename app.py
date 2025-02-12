@@ -5,27 +5,25 @@ from flask import Flask, redirect, render_template, request, send_file
 
 # Configure Application
 app = Flask(__name__)
-
-# Set the upload and download directories dynamically
-UPLOADS_DIR = r"uploads"
-DOWNLOADS_DIR = r"downloads"
-
-# Ensure directories exist
-os.makedirs(UPLOADS_DIR, exist_ok=True)
-os.makedirs(DOWNLOADS_DIR, exist_ok=True)
-
-app.config["FILE_UPLOADS"] = UPLOADS_DIR
+global filename
+global ftype
 
 @app.route("/")
 def home():
     # Delete old files
-    filelist = glob.glob(os.path.join(UPLOADS_DIR, "*"))
+    filelist = glob.glob('uploads/*')
     for f in filelist:
         os.remove(f)
-    filelist = glob.glob(os.path.join(DOWNLOADS_DIR, "*"))
+    filelist = glob.glob('downloads/*')
     for f in filelist:
         os.remove(f)
     return render_template("home.html")
+
+# Set the upload and download directories
+UPLOADS_DIR = r"uploads"
+DOWNLOADS_DIR = r"downloads"
+
+app.config["FILE_UPLOADS"] = UPLOADS_DIR
 
 @app.route("/compress", methods=["GET", "POST"])
 def compress():
@@ -34,6 +32,8 @@ def compress():
     else:
         up_file = request.files["file"]
         if len(up_file.filename) > 0:
+            global filename
+            global ftype
             filename = up_file.filename
             print(f"Uploaded file: {filename}")
             
@@ -55,7 +55,7 @@ def compress():
                 print(f"Compressed file found: {compressed_file_path}")
                 
                 # Move the compressed file to the downloads directory
-                os.system(f'mv "{compressed_file_path}" "{DOWNLOADS_DIR}"')
+                os.system(f'move "{compressed_file_path}" "{DOWNLOADS_DIR}"')
                 print(f"Moved {compressed_file_path} to {DOWNLOADS_DIR}")
             else:
                 print(f"Error: Compressed file not found at {compressed_file_path}")
@@ -73,6 +73,8 @@ def decompress():
     else:
         up_file = request.files["file"]
         if len(up_file.filename) > 0:
+            global filename
+            global ftype
             filename = up_file.filename
             print(f"Uploaded file: {filename}")
             
@@ -98,7 +100,7 @@ def decompress():
                 print(f"Decompressed file found: {decompressed_file_path}")
                 
                 # Move the decompressed file to the downloads directory
-                os.system(f'mv "{decompressed_file_path}" "{DOWNLOADS_DIR}"')
+                os.system(f'move "{decompressed_file_path}" "{DOWNLOADS_DIR}"')
                 print(f"Moved {decompressed_file_path} to {DOWNLOADS_DIR}")
             else:
                 print(f"Error: Decompressed file not found at {decompressed_file_path}")
@@ -123,6 +125,6 @@ def download_file():
         print(f"Error: File not found at {path}")
         return "File not found", 404
 
-# Start the application
+# Restart application whenever changes are made
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
