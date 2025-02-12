@@ -7,9 +7,8 @@ from flask import Flask, redirect, render_template, request, send_file
 app = Flask(__name__)
 
 # Set the upload and download directories dynamically
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
-DOWNLOADS_DIR = os.path.join(BASE_DIR, "downloads")
+UPLOADS_DIR = r"uploads"
+DOWNLOADS_DIR = r"downloads"
 
 # Ensure directories exist
 os.makedirs(UPLOADS_DIR, exist_ok=True)
