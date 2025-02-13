@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: flask-compression-app
+    env: python
+    buildCommand: |
+      # Install dependencies
+      pip install -r requirements.txt
+      # Ensure executables are executable
+      chmod +x huffcompress
+      chmod +x huffdecompress
+    startCommand: gunicorn app:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+    disk:
+      sizeGB: 1
+      mountPath: /opt/render/project/src
