@@ -20,6 +20,7 @@ struct huffnode
 };
 typedef struct huffnode *NODE;
 
+
 struct Minheap
 {
     unsigned short size, capacity;
