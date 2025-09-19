@@ -16,6 +16,7 @@ int main(int argc, char *argv[]){
         cout<<"Invalid cmd line arg. Usage: ./a.out <input file>\n";
         return 1;
     }
+    
     FILE *input = fopen(argv[1], "rb");
     int num_of_unique_chars=0;
     if(input == NULL){
